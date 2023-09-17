@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Horizontal Scroll Menu Bar</title>
+    <script src="https://code.jquery.com/jquery-3.6.4.js"></script>
+    <style>
+        .menu-bar {
+            overflow-x: auto;
+            overflow-y: hidden;
+            white-space: nowrap;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* 스크롤 가리기 */
+        /* .menu-bar::-webkit-scrollbar {
+            display: none;
+        } */
+
+        .menu-item {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            text-decoration: none;
+            color: #000;
+            border: 1px solid #eee;
+        }
+
+        .scroll-button {
+            width: 25px;
+            height: 42px;
+            background-color: #eee;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            transition: opacity 0.2s ease;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body>
+    <div style="display:flex;">
+        <div><button id="leftArrow" style="left: 0;" class="scroll-button left">&lt;</button></div>
+        <div style="width:300px;" id="menu" class="menu-bar">
+            <a href="#" class="menu-item active">1월</a>
+            <a href="#" class="menu-item">2월</a>
+            <a href="#" class="menu-item">3월</a>
+            <a href="#" class="menu-item">4월</a>
+            <a href="#" class="menu-item">5월</a>
+            <a href="#" class="menu-item">6월</a>
+            <a href="#" class="menu-item">7월</a>
+            <a href="#" class="menu-item">8월</a>
+            <a href="#" class="menu-item">9월</a>
+            <a href="#" class="menu-item">10월</a>
+            <a href="#" class="menu-item">11월</a>
+            <a href="#" class="menu-item">12월</a>
+        </div>
+        <div><button id="rightArrow" style="right: 0;" class="scroll-button right">&gt;</button></div>
+    </div>
+
+<script>
+    $(document).ready(function() {
+
+    })
+    // 휠
+    $("#menu").on("wheel", function (event) {
+        let scrollLeft = this.scrollLeft;
+        scrollLeft += event.originalEvent.deltaY;
+        this.scrollLeft = scrollLeft;
+        event.preventDefault();
+    });
+
+    // 스크롤의 끝 처리
+    $("#menu").on("scroll", function () {
+        const scrollLeft = $(this).scrollLeft();
+        const menuWidth = $(this).outerWidth();
+        const contentWidth = $(this).get(0).scrollWidth;
+
+        if (contentWidth - scrollLeft <= menuWidth) {
+            $("#rightArrow").css("opacity", "0");
+            // $("#rightArrow").hide();
+        } else {
+            $("#rightArrow").css("opacity", "1");
+            // $("#rightArrow").show();
+        }
+
+        if (scrollLeft === 0) {
+            $("#leftArrow").css("opacity", "0");
+            // $("#leftArrow").hide();
+        } else {
+            $("#leftArrow").css("opacity", "1");
+            // $("#leftArrow").show();
+        }
+    });
+
+    // 왼쪽 화살표이동
+    $("#leftArrow").on("click", function () {
+        // const menuItemWidth = menu.querySelector(".menu-item").offsetWidth;
+        const menuItemWidth = 200;
+        const newScrollLeft = menu.scrollLeft - menuItemWidth;
+        $(menu).animate({ scrollLeft: newScrollLeft }, 200);
+    });
+
+    // 오른쪽 화살표이동
+    $("#rightArrow").on("click", function () {
+        // const menuItemWidth = menu.querySelector(".menu-item").offsetWidth;
+        const menuItemWidth = 200;
+        const newScrollLeft = menu.scrollLeft + menuItemWidth;
+        $(menu).animate({ scrollLeft: newScrollLeft }, 200);
+    });
+</script>
+</body>
+
+</html>
